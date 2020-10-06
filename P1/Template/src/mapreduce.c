@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
 	// To do
 	// wait for all children to complete execution
 	int status2;
-	while ((pid = wait(&status2)) > 0); //wait for ALL processes
+	while ((pid3 = wait(&status2)) > 0); //wait for ALL processes
 	sleep(1);
 	printf("\nDone reduce.\n");
 
