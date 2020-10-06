@@ -25,4 +25,4 @@ Project details as mentioned in Section Deliverables.
 • Any assumptions outside this document
 
 • Contribution by each member of the team
-  Minh Bui: completed most of the mapper.c implementation and the handling of mapper processes in mapreduce 
+  Minh Bui: completed most of the mapper.c framework implementation and the handling of mapper processes in mapreduce; worked on the framework of implementing reducer.c with is linked list data structure. For both processes, saw that the output file creation was accurate  
