@@ -138,9 +138,9 @@ void writeIntermediateDS(void) {
 		if(newtxt == NULL)
 		{
 			fprintf(stderr, "mapper.c, file open error, errno value: %d\n", errno);
-			exit(0);
+			exit(1);
 		}
-		fprintf(newtxt,"%s.txt ", temp->key);
+		fprintf(newtxt,"%s ", temp->key);
 		while(tempValNode != NULL)
 		{
 				//print in succession the 1's from valueList
@@ -152,6 +152,8 @@ void writeIntermediateDS(void) {
 		tempValNode = temp->value;
 	}
 	freeInterDS(LinkedListRoot);
+	free(tempValNode);
+	free(temp);
 }
 
 int main(int argc, char *argv[]) {
