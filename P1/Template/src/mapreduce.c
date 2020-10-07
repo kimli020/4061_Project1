@@ -53,6 +53,12 @@ int main(int argc, char *argv[]) {
 
 
 
+	if(nMappers < nReducers)
+	{
+		printf("Illegal: nReducers > nMappers \n");
+		exit(1);
+	}
+
 	// ###### DO NOT REMOVE ######
 	pid_t pid = fork();
 	if(pid == 0){
@@ -112,7 +118,7 @@ int main(int argc, char *argv[]) {
 		{ /*do nothing for now*/ }
 		else //error
 		{
-			perror("fork problem in mapreduce.c");
+			perror("fork problem in mapreduce.c - map");
 			exit(-1);
 		}
 	}
@@ -120,9 +126,9 @@ int main(int argc, char *argv[]) {
 	// To do
 	// wait for all children to complete execution
 	int status;
-	while ((pid2 = wait(&status)) > 0); //wait for ALL processes
+	while ((pid = wait(&status)) > 0); //wait for ALL processes
 	sleep(1);
-	printf("\nDone.\n");
+	printf("\nDone map.\n");
 
 
 	// ###### DO NOT REMOVE ######
@@ -138,9 +144,35 @@ int main(int argc, char *argv[]) {
 
 	// To do
 	// spawn reducer processes and run 'reducer' executable using exec
+	pid_t pid3;
+	for(int i=0; i < nReducers; i++)
+	{
+		pid3 = fork();
+		if(pid3==0)	//child process
+		{
+			//Send chunks of data to reducers in RR fashion
+			char *binaryPath = "./reducer";
+			char str[2];
+			sprintf(str, "%d", i+1);
+			char *args[] = {binaryPath, str, '\0'};
+			int y = execvp(binaryPath, args);
+		}
+
+		if(pid3 > 0)	//parent process
+		{ /*do nothing for now*/ }
+		else //error
+		{
+			perror("fork problem in mapreduce.c - reduce");
+			exit(-1);
+		}
+	}
 
 	// To do
 	// wait for all children to complete execution
+	int status2;
+	while ((pid3 = wait(&status2)) > 0); //wait for ALL processes
+	sleep(1);
+	printf("\nDone reduce.\n");
 
 	return 0;
 }
