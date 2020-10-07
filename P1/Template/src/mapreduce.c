@@ -19,11 +19,30 @@ int main(int argc, char *argv[]) {
 	
 	//check if input file exists:
 	int result = access(inputFile, F_OK); 
-
   	if( result == -1 ) {
    		printf("Illegal: input file must exist \n");
   		exit(1);
   	}
+	
+	 //Check if file is empty by getting the position of EOF. HAS TO COME BEFORE CALL TO bookkeepingCode()!
+	 FILE *fp; 
+	 fp = fopen(inputFile,"r");
+	 fseek(fp, 0, SEEK_END); // go to EOF
+	 if (ftell(fp) == 0)	//if current position is 0, file has nothing, empty
+	  {
+	 	 printf("Your input is void and hollow, not worth my time. \n");
+	 	 fclose(fp);
+	 	 exit(1);
+	  }else {
+
+    		fclose(fp);
+   
+   	} 
+	
+	// ###### DO NOT REMOVE ######
+	bookeepingCode();
+	
+
 	//check for negative input #'s
 	if ( (nMappers <= 0) || (nReducers <= 0) )
   	{
@@ -32,8 +51,7 @@ int main(int argc, char *argv[]) {
    	}
 
 
-	// ###### DO NOT REMOVE ######
-	bookeepingCode();
+
 
 	// ###### DO NOT REMOVE ######
 	pid_t pid = fork();
