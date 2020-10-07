@@ -8,11 +8,29 @@ int main(int argc, char *argv[]) {
 		printf("./mapreduce #mappers #reducers inputFile\n");
 		exit(0);
 	}
+	
+
+
 
 	// ###### DO NOT REMOVE ######
 	int nMappers 	= strtol(argv[1], NULL, 10);
 	int nReducers 	= strtol(argv[2], NULL, 10);
 	char *inputFile = argv[3];
+	
+	//check if input file exists:
+	int result = access(inputFile, F_OK); 
+
+  	if( result == -1 ) {
+   		printf("Illegal: input file must exist \n");
+  		exit(1);
+  	}
+	//check for negative input #'s
+	if ( (nMappers <= 0) || (nReducers <= 0) )
+  	{
+		printf("Illegal: # of file must be greater than 0 \n");
+		exit(1);
+   	}
+
 
 	// ###### DO NOT REMOVE ######
 	bookeepingCode();
